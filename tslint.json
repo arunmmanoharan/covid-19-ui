@@ -1,0 +1,25 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-eslint-rules", "tslint-config-prettier", "tslint-react-hooks"],
+  "jsRules": {},
+  "rules": {
+    "ordered-imports": false,
+    "no-console": false,
+    "comment-format": false,
+    "no-var-requires": false,
+    "interface-name": false,
+    "no-implicit-dependencies": false,
+    "max-classes-per-file": false,
+    "no-duplicate-imports": false,
+    "no-unused-expression": [true, "allow-fast-null-checks"],
+    "no-empty-interface": false,
+    "no-empty": [true, "allow-empty-functions", "allow-empty-catch"],
+    "no-switch-case-fall-through": true,
+    "object-literal-sort-keys": false,
+    "member-access": false,
+    "member-ordering": false,
+    "strict-type-predicates": false,
+    "no-shadowed-variable": false,
+    "no-default-export": false
+  }
+}
