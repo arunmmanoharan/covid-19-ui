@@ -1,9 +1,8 @@
 import { HTTPError } from '../support/errors';
 
-const API_BASE = 'http://localhost:8888';
+const API_BASE = 'https://covid-19-api.azurewebsites.net';
 
-const request = async(path: string, options?: RequestInit) => {
-
+const request = async (path: string, options?: RequestInit) => {
 	options = { ...options };
 
 	const url = `${API_BASE}${path}`;
@@ -21,12 +20,12 @@ const request = async(path: string, options?: RequestInit) => {
 	}
 
 	return response;
-}
+};
 
-export const load  = async(path: string) => {
+export const load = async (path: string) => {
 	const response = await request(path);
 	return await response.json();
-}
+};
 
 export const create = async (path: string, payload: object) => {
 	const response = await request(path, {
@@ -36,7 +35,7 @@ export const create = async (path: string, payload: object) => {
 	});
 
 	return await response.json();
-}
+};
 
 export const update = create;
 
@@ -44,4 +43,4 @@ export const remove = async (path: string) => {
 	await request(path, {
 		method: 'DELETE',
 	});
-}
+};
