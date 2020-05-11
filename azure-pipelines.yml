@@ -16,6 +16,8 @@ variables:
   # Environment name
   environmentName: 'covid-ui'
 
+  buildOutputFolder: 'build'
+
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
   System.debug: true
@@ -23,9 +25,6 @@ steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '14.x'
-- task: Npm@1
-  inputs:
-    command: 'install'
 - script: |
     yarn install
     yarn build
