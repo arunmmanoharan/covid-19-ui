@@ -41,7 +41,7 @@ steps:
     ConnectionType: 'AzureRM'
     azureSubscription: $(azureSubscription)
     appType: 'webAppLinux'
-    WebAppName: 'rafe-react'
+    WebAppName: 'covid-ui'
     packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
     RuntimeStack: 'NODE|14.x'
     StartupCommand: 'serve -s build'
