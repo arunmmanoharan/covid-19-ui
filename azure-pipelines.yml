@@ -1,0 +1,48 @@
+# Node.js React Web App to Linux on Azure
+# Build a Node.js React app and deploy it to Azure as a Linux web app.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+variables:
+  # Azure Resource Manager connection created during pipeline creation
+  azureSubscription: '0f61b1e1-f27b-4311-934c-91e957bf3e09'
+
+  # Web app name
+  webAppName: 'covid-ui'
+
+  # Environment name
+  environmentName: 'covid-ui'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  System.debug: true
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.x'
+- task: Npm@1
+  inputs:
+    command: 'install'
+- script: |
+    yarn install
+    yarn build
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: $(azureSubscription)
+    appType: 'webAppLinux'
+    WebAppName: 'rafe-react'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+    RuntimeStack: 'NODE|14.x'
+    StartupCommand: 'serve -s build'
+    enableCustomDeployment: true
