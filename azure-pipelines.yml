@@ -29,20 +29,23 @@ steps:
 - script: |
     yarn install
     yarn build
+  ## Copy the client to the staging directory
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(buildOutputFolder)'
+    contents: '**/*'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    cleanTargetFolder: true
+
+  ## Archive the files into a zip file for publishing
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
-    includeRootFolder: true
+    rootFolderOrFile: $(Build.ArtifactStagingDirectory)
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-- task: AzureRmWebAppDeployment@4
+    includeRootFolder: false
+
+  ## Publish the zip file
+- task: PublishBuildArtifacts@1
   inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: $(azureSubscription)
-    appType: 'webAppLinux'
-    WebAppName: 'covid-ui'
-    packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
-    RuntimeStack: 'NODE|14.x'
-    StartupCommand: 'serve -s build'
-    enableCustomDeployment: true
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
